@@ -55,3 +55,7 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+.containers
+.vs
+src/Cycling.Rider.Tracking.Api/Cycling.Rider.Tracking.Api/appsettings.Development.json
+docker-compose.override.yml

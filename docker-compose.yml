@@ -1,0 +1,52 @@
+services:
+  cycling.rider.tracking.api:
+    image: ${DOCKER_REGISTRY-}cyclingridertrackingapi
+    build:
+      context: .
+      dockerfile: src/Cycling.Rider.Tracking.Api/Cycling.Rider.Tracking.Api/Dockerfile
+    depends_on:
+      postgres.tracking:
+          condition: service_healthy
+      rabbitmq:
+          condition: service_healthy
+
+  postgres.tracking:
+    image: postgres:17
+    container_name: postgres
+    environment:
+      - POSTGRES_DB=tracking
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./.containers/db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  rabbitmq:
+    image: rabbitmq:4.3.1
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      RABBITMQ_DEFAULT_USER: ftinoco
+      RABBITMQ_DEFAULT_PASS: ftinoco
+    configs:
+      - source: rabbitmq-plugins
+        target: /etc/rabbitmq/enabled_plugins
+    volumes:
+      - rabbitmq-lib:/var/lib/rabbitmq/
+      - rabbitmq-log:/var/log/rabbitmq
+
+configs:
+  rabbitmq-plugins:
+    content: "[rabbitmq_management]."  
+
+volumes:
+  rabbitmq-lib:
+    driver: local
+  rabbitmq-log:
+    driver: local
+  postgres.tracking:
+        name: tracking-database
