@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Cycling.Rider.Tracking.Infrastructure.Rides;
 
-internal class RideConfiguration : IEntityTypeConfiguration<Ride>
+public class RideConfiguration : IEntityTypeConfiguration<Ride>
 {
     public void Configure(EntityTypeBuilder<Ride> builder)
     {
