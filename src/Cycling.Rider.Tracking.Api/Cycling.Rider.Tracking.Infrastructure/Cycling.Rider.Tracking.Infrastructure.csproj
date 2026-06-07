@@ -27,6 +27,9 @@
 		<ProjectReference Include="..\Cycling.Rider.Tracking.Application\Cycling.Rider.Tracking.Application.csproj" />
 		<ProjectReference Include="..\Cycling.Rider.Tracking.Domain\Cycling.Rider.Tracking.Domain.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+		<InternalsVisibleTo Include="..\..\..\tests\Cycling.Rider.Tracking.Tests.Unit\Cycling.Rider.Tracking.Tests.Unit.csproj" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<Folder Include="Migrations\" />

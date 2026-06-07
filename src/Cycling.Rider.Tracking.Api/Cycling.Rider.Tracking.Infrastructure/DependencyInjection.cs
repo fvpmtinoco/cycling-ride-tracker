@@ -62,7 +62,7 @@ public static class DependencyInjection
 
     private static IServiceCollection AddPushFileService(this IServiceCollection services)
     {
-        services.AddScoped<OutboxProcessor>();
+        services.AddScoped<IOutboxProcessor, OutboxProcessor>();
         services.AddHostedService<PushFileService>();
 
         return services;

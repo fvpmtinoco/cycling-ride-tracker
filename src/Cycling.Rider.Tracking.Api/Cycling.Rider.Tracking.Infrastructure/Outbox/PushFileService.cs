@@ -13,7 +13,7 @@ public class PushFileService(IServiceScopeFactory scopeFactory, ILogger<PushFile
             try
             {
                 using var scope = scopeFactory.CreateScope();
-                var outboxProcessor = scope.ServiceProvider.GetRequiredService<OutboxProcessor>();
+                var outboxProcessor = scope.ServiceProvider.GetRequiredService<IOutboxProcessor>();
                 await outboxProcessor.ProcessOutboxAsync(stoppingToken);
 
             }

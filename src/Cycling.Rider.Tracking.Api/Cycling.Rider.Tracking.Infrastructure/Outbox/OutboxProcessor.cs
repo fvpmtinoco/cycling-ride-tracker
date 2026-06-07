@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Cycling.Rider.Tracking.Infrastructure.Outbox;
 
-internal sealed class OutboxProcessor(DatabaseContext databaseContext, IFileStore fileStore)
+internal sealed class OutboxProcessor(DatabaseContext databaseContext, IFileStore fileStore) : IOutboxProcessor
 {
-    internal async Task ProcessOutboxAsync(CancellationToken cancellationToken)
+    public async Task ProcessOutboxAsync(CancellationToken cancellationToken)
     {
         await using var transaction = await databaseContext.Database.BeginTransactionAsync(cancellationToken);
 
