@@ -1,6 +1,7 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using Cycling.Rider.Tracking.Application.Abstractions.Data;
+using Cycling.Rider.Tracking.Infrastructure.Options;
 using Microsoft.Extensions.Options;
 
 namespace Cycling.Rider.Tracking.Infrastructure.Storage;
@@ -17,7 +18,7 @@ public class S3FileStorage(IAmazonS3 s3, IOptions<S3StorageOptions> options) : I
                 BucketName = options.Value.Bucket,
                 Key = rideId.ToString(),
                 InputStream = content,
-                ContentType = "text/plain"
+                ContentType = contentType
             };
 
             await s3.PutObjectAsync(uploadRequest, cancellationToken);
@@ -29,12 +30,4 @@ public class S3FileStorage(IAmazonS3 s3, IOptions<S3StorageOptions> options) : I
 
         return new FileLocation(rideId, options.Value.Bucket, rideId.ToString(), length);
     }
-}
-
-public record S3StorageOptions
-{
-    public required string ServiceUrl { get; init; }
-    public required string Bucket { get; init; }
-    public required string AccessKey { get; init; }
-    public required string SecretKey { get; init; }
 }

@@ -1,5 +1,4 @@
 using Cycling.Rider.Tracking.Api.Extensions;
-using Cycling.Rider.Tracking.Application.Abstractions.Data;
 using Cycling.Rider.Tracking.Application.Abstractions.Messaging;
 using Cycling.Rider.Tracking.Application.Files;
 using Cycling.Rider.Tracking.Infrastructure;
@@ -12,7 +11,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddPresentation();
 builder.Services.AddInfrastructure(builder.Configuration);
 
-builder.Services.AddScoped<ICommandHandler<SaveFileCommand, FileLocation>, SaveFileCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<SaveFileCommand, SaveFileResult>, SaveFileCommandHandler>();
+
+//builder.Services.AddLogging(c =>
+//{
+//    c.AddConsole();
+//}); 
+
+builder.Logging.AddConsole();
 
 var app = builder.Build();
 

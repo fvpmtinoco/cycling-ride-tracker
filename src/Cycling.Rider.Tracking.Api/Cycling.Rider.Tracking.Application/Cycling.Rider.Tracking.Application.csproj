@@ -11,4 +11,8 @@
     <ProjectReference Include="..\Cycling.Rider.Tracking.Domain\Cycling.Rider.Tracking.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Abstractions\Outbox\" />
+  </ItemGroup>
+
 </Project>

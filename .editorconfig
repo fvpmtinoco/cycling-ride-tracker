@@ -231,6 +231,9 @@ dotnet_diagnostic.CA1000.severity = none
 # CA1002: Do not expose generic lists
 dotnet_diagnostic.CA1002.severity = none
 
+# CA1873: Avoid potentially expensive logging
+dotnet_diagnostic.CA1873.severity = none
+
 # CA1008: Enums should have zero value
 dotnet_diagnostic.CA1008.severity = none
 
@@ -345,6 +348,9 @@ dotnet_diagnostic.CS8603.severity = none
 # CS8618: Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 dotnet_diagnostic.CS8618.severity = none
 
+# CA1861: Prefer 'static readonly' fields over constant array arguments if the called method is called repeatedly and is not mutating the passed array
+dotnet_diagnostic.CA1861.severity = none
+
 # IDE Code Analyzers rules
 
 # IDE0005
@@ -414,3 +420,6 @@ dotnet_diagnostic.S6605.severity = none
 
 # S6781: JWT secret keys should not be disclosed
 dotnet_diagnostic.S6781.severity = none
+
+# S6667: Logging in a catch clause should pass the caught exception as a parameter.
+dotnet_diagnostic.S6667.severity = none

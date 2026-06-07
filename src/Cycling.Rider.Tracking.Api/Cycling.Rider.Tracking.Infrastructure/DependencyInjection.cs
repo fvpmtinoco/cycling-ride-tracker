@@ -2,7 +2,10 @@
 using Amazon.S3;
 using Cycling.Rider.Tracking.Application.Abstractions.Data;
 using Cycling.Rider.Tracking.Infrastructure.Database;
+using Cycling.Rider.Tracking.Infrastructure.Options;
+using Cycling.Rider.Tracking.Infrastructure.Outbox;
 using Cycling.Rider.Tracking.Infrastructure.Storage;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
@@ -17,7 +20,9 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration) =>
         services.AddDatabase(configuration)
-                .AddStorage(configuration);
+                .AddStorage(configuration)
+                .AddPushFileService()
+                .AddTransport(configuration);
 
     private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
     {
@@ -51,6 +56,34 @@ public static class DependencyInjection
         });
 
         services.AddScoped<IFileStore, S3FileStorage>();
+
+        return services;
+    }
+
+    private static IServiceCollection AddPushFileService(this IServiceCollection services)
+    {
+        services.AddScoped<OutboxProcessor>();
+        services.AddHostedService<PushFileService>();
+
+        return services;
+    }
+
+    private static IServiceCollection AddTransport(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddMassTransit(x =>
+        {
+            x.AddEntityFrameworkOutbox<DatabaseContext>(o =>
+            {
+                o.UsePostgres();
+                o.UseBusOutbox();  // publishes are captured into the outbox
+                o.QueryDelay = TimeSpan.FromSeconds(10);
+            });
+            x.UsingRabbitMq((ctx, cfg) =>
+            {
+                cfg.Host(configuration.GetSection("Messaging").GetValue<string>("Host")!);
+                cfg.ConfigureEndpoints(ctx);
+            });
+        });
 
         return services;
     }
