@@ -1,4 +1,5 @@
 ﻿using Cycling.Rider.Tracking.Application.Abstractions.Data;
+using Cycling.Rider.Tracking.Domain.Idempotency;
 using Cycling.Rider.Tracking.Domain.Rides;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ public sealed class DatabaseContext(DbContextOptions<DatabaseContext> options)
 {
     public DbSet<Ride> Rides { get; set; }
     public DbSet<Domain.Outbox.TransactionFile> TransactionFiles { get; set; }
+    public DbSet<IdempotencyKey> IdempotencyKeys { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
