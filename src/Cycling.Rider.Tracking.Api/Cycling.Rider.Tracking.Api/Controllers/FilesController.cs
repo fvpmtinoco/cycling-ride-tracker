@@ -2,11 +2,13 @@ using Cycling.Rider.Tracking.Api.Extensions;
 using Cycling.Rider.Tracking.Api.Infrastructure;
 using Cycling.Rider.Tracking.Application.Abstractions.Messaging;
 using Cycling.Rider.Tracking.Application.Files;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cycling.Rider.Tracking.Api.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("files")]
 public class FilesController(ICommandHandler<SaveFileCommand, SaveFileResult> handler) : ControllerBase
 {

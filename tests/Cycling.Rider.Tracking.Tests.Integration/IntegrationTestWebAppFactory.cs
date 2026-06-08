@@ -10,6 +10,9 @@ namespace Cycling.Rider.Tracking.Tests.Integration;
 
 public sealed class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
+    public const string TestUsername = "tester";
+    public const string TestPassword = "test-password";
+
     private readonly PostgreSqlContainer postgres = new PostgreSqlBuilder("postgres:17")
         .Build();
 
@@ -37,6 +40,13 @@ public sealed class IntegrationTestWebAppFactory : WebApplicationFactory<Program
         Environment.SetEnvironmentVariable("Storage__SecretKey", minio.GetSecretKey());
         Environment.SetEnvironmentVariable("Storage__Bucket", "rides");
 
+        Environment.SetEnvironmentVariable("Jwt__Issuer", "test-issuer");
+        Environment.SetEnvironmentVariable("Jwt__Audience", "test-audience");
+        Environment.SetEnvironmentVariable("Jwt__Key", "integration-test-signing-key-at-least-32-bytes");
+        Environment.SetEnvironmentVariable("Jwt__ExpiryMinutes", "60");
+        Environment.SetEnvironmentVariable("Auth__Username", TestUsername);
+        Environment.SetEnvironmentVariable("Auth__Password", TestPassword);
+
         using var scope = Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
         await dbContext.Database.MigrateAsync();
@@ -50,6 +60,13 @@ public sealed class IntegrationTestWebAppFactory : WebApplicationFactory<Program
         Environment.SetEnvironmentVariable("Storage__AccessKey", null);
         Environment.SetEnvironmentVariable("Storage__SecretKey", null);
         Environment.SetEnvironmentVariable("Storage__Bucket", null);
+
+        Environment.SetEnvironmentVariable("Jwt__Issuer", null);
+        Environment.SetEnvironmentVariable("Jwt__Audience", null);
+        Environment.SetEnvironmentVariable("Jwt__Key", null);
+        Environment.SetEnvironmentVariable("Jwt__ExpiryMinutes", null);
+        Environment.SetEnvironmentVariable("Auth__Username", null);
+        Environment.SetEnvironmentVariable("Auth__Password", null);
 
         await postgres.DisposeAsync();
         await rabbitMq.DisposeAsync();
