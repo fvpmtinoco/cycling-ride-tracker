@@ -1,10 +1,15 @@
 ﻿using Cycling.Rider.Tracking.Application.Abstractions.Data;
+using Cycling.Rider.Tracking.Contracts;
 using Cycling.Rider.Tracking.Infrastructure.Database;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cycling.Rider.Tracking.Infrastructure.Outbox;
 
-internal sealed class OutboxProcessor(DatabaseContext databaseContext, IFileStore fileStore) : IOutboxProcessor
+internal sealed class OutboxProcessor(
+    DatabaseContext databaseContext,
+    IFileStore fileStore,
+    IPublishEndpoint publishEndpoint) : IOutboxProcessor
 {
     public async Task ProcessOutboxAsync(CancellationToken cancellationToken)
     {
@@ -26,6 +31,10 @@ internal sealed class OutboxProcessor(DatabaseContext databaseContext, IFileStor
             await fileStore.StoreAsync(file.FileId, ms, file.ContentType ?? "text/plain", cancellationToken);
             file.Processed = true;
             file.ProcessedAt = DateTimeOffset.UtcNow;
+
+            await publishEndpoint.Publish(
+                new RideFileSaved(file.FileId, file.ProcessedAt.Value),
+                cancellationToken);
         }
 
         await databaseContext.SaveChangesAsync(cancellationToken);

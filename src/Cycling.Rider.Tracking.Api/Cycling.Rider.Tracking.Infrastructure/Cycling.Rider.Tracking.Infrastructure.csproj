@@ -26,6 +26,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Cycling.Rider.Tracking.Application\Cycling.Rider.Tracking.Application.csproj" />
 		<ProjectReference Include="..\Cycling.Rider.Tracking.Domain\Cycling.Rider.Tracking.Domain.csproj" />
+		<ProjectReference Include="..\..\Cycling.Rider.Tracking.Contracts\Cycling.Rider.Tracking.Contracts.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<InternalsVisibleTo Include="Cycling.Rider.Tracking.Tests.Unit" />
