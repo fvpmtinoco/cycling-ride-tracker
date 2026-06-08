@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\..\Cycling.Rider.Tracking.SharedKernel\Cycling.Rider.Tracking.SharedKernel.csproj" />
     <ProjectReference Include="..\Cycling.Rider.Tracking.Domain\Cycling.Rider.Tracking.Domain.csproj" />
   </ItemGroup>

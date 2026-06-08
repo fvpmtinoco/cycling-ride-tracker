@@ -11,6 +11,7 @@
     <PackageVersion Include="Moq" Version="4.20.72" />
     <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.18.0.131500" />
     <!-- Application -->
+    <PackageVersion Include="FluentValidation" Version="12.1.1" />
     <!-- Infrastructure -->
     <PackageVersion Include="AWSSDK.S3" Version="4.0.24" />
     <PackageVersion Include="EFCore.NamingConventions" Version="10.0.1" />
