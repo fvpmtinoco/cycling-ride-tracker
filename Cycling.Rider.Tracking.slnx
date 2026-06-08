@@ -13,6 +13,7 @@
     <Project Path="src/Cycling.Rider.Tracking.Api/Cycling.Rider.Tracking.Infrastructure/Cycling.Rider.Tracking.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/Cycling.Rider.Tracking.Tests.Integration/Cycling.Rider.Tracking.Tests.Integration.csproj" />
     <Project Path="tests/Cycling.Rider.Tracking.Tests.Unit/Cycling.Rider.Tracking.Tests.Unit.csproj" Id="67f31333-a6de-426f-bbc6-781f1b733d7a" />
   </Folder>
   <Project Path="../Cycling.Rider.Tracking.SharedKernel/Cycling.Rider.Tracking.SharedKernel.csproj" Id="94bf44ab-b957-49e7-8e46-fa574d68002b" />
