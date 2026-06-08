@@ -10,6 +10,15 @@ services:
       rabbitmq:
           condition: service_healthy
 
+  cycling.rider.tracking.processor:
+    image: ${DOCKER_REGISTRY-}cyclingridertrackingprocessor
+    build:
+      context: .
+      dockerfile: src/Cycling.Rider.Tracking.Processor/Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
   postgres.tracking:
     image: postgres:17
     container_name: postgres
