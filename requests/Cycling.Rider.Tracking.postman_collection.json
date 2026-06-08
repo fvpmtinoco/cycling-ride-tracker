@@ -1,0 +1,73 @@
+{
+  "info": {
+    "name": "Cycling Ride Tracker - Auth (self-issued JWT)",
+    "description": "Exercises the self-issued JWT flow: get a token, then call the protected /files/fit endpoint. Set the baseUrl variable to the API's current host:port (the VS Docker port is ephemeral - check `docker ps`).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:62945" },
+    { "key": "username", "value": "rider" },
+    { "key": "password", "value": "dev-only-password-change-me" },
+    { "key": "accessToken", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Get token",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('200 OK', () => pm.response.to.have.status(200));",
+              "pm.collectionVariables.set('accessToken', pm.response.json().accessToken);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [ { "key": "Content-Type", "value": "application/json" } ],
+        "url": { "raw": "{{baseUrl}}/auth/token", "host": ["{{baseUrl}}"], "path": ["auth", "token"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Save fit file (authorized -> 201)",
+      "request": {
+        "method": "POST",
+        "header": [ { "key": "Authorization", "value": "Bearer {{accessToken}}" } ],
+        "url": {
+          "raw": "{{baseUrl}}/files/fit?rideDate=2026-06-08T08:00:00Z",
+          "host": ["{{baseUrl}}"],
+          "path": ["files", "fit"],
+          "query": [ { "key": "rideDate", "value": "2026-06-08T08:00:00Z" } ]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [ { "key": "fit", "type": "file", "src": [] } ]
+        }
+      }
+    },
+    {
+      "name": "Save fit file (no token -> 401)",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/files/fit?rideDate=2026-06-08T08:00:00Z",
+          "host": ["{{baseUrl}}"],
+          "path": ["files", "fit"],
+          "query": [ { "key": "rideDate", "value": "2026-06-08T08:00:00Z" } ]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [ { "key": "fit", "type": "file", "src": [] } ]
+        }
+      }
+    }
+  ]
+}
