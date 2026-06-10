@@ -1,11 +1,27 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="README.md" />
+  </Folder>
   <Folder Name="/src/" />
   <Folder Name="/src/Cycling.Rider.Tracking.Api/">
-    <Project Path="src/Cycling.Rider.Tracking.Api/Cycling.Rider.Tracking.Api/Cycling.Rider.Tracking.Api.csproj" />
-    <Project Path="src/Cycling.Rider.Tracking.Api/Cycling.Rider.Tracking.Application/Cycling.Rider.Tracking.Application.csproj" Id="6ae6fadb-b340-44f7-8cee-7269e6591a24" />
-    <Project Path="src/Cycling.Rider.Tracking.Api/Cycling.Rider.Tracking.Domain/Cycling.Rider.Tracking.Domain.csproj" Id="7905c520-4061-469f-b0b5-fa080a0ae23b" />
-    <Project Path="src/Cycling.Rider.Tracking.Api/Cycling.Rider.Tracking.Infrastructure/Cycling.Rider.Tracking.Infrastructure.csproj" />
+    <Project Path="src/Cycling.Rider.Tracking.Api/Cycling.Rider.Tracking.Api.csproj" />
+    <Project Path="src/Cycling.Rider.Tracking.Application/Cycling.Rider.Tracking.Application.csproj" Id="6ae6fadb-b340-44f7-8cee-7269e6591a24" />
+    <Project Path="src/Cycling.Rider.Tracking.Domain/Cycling.Rider.Tracking.Domain.csproj" Id="7905c520-4061-469f-b0b5-fa080a0ae23b" />
+    <Project Path="src/Cycling.Rider.Tracking.Infrastructure/Cycling.Rider.Tracking.Infrastructure.csproj" />
+	<Project Path="src/Cycling.Rider.Tracking.Contracts/Cycling.Rider.Tracking.Contracts.csproj" />
+	<Project Path="src/Cycling.Rider.Tracking.SharedKernel/Cycling.Rider.Tracking.SharedKernel.csproj" Id="94bf44ab-b957-49e7-8e46-fa574d68002b" />
   </Folder>
+  <Folder Name="/src/Cycling.Rider.Analyzer/">
+  	<Project Path="src/Cycling.Rider.Tracking.Processor/Cycling.Rider.Tracking.Processor.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Cycling.Rider.Tracking.Tests.Integration/Cycling.Rider.Tracking.Tests.Integration.csproj" />
+    <Project Path="tests/Cycling.Rider.Tracking.Tests.Unit/Cycling.Rider.Tracking.Tests.Unit.csproj" Id="67f31333-a6de-426f-bbc6-781f1b733d7a" />
+  </Folder>
+  
   <Project Path="docker-compose.dcproj">
     <Build />
   </Project>

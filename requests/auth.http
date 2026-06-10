@@ -1,0 +1,38 @@
+### Self-issued JWT auth flow.
+### Set @host to the API's current port (the VS Docker port is ephemeral - check `docker ps`).
+@host = http://localhost:62945
+@username = rider
+@password = dev-only-password-change-me
+
+### 1. Get a JWT
+# @name token
+POST {{host}}/auth/token
+Content-Type: application/json
+
+{
+  "username": "{{username}}",
+  "password": "{{password}}"
+}
+
+### 2. Save a .fit file - authorized (expect 201 Created)
+POST {{host}}/files/fit?rideDate=2026-06-08T08:00:00Z
+Authorization: Bearer {{token.response.body.$.accessToken}}
+Content-Type: multipart/form-data; boundary=BoundaryFit
+
+--BoundaryFit
+Content-Disposition: form-data; name="fit"; filename="ride.fit"
+Content-Type: application/octet-stream
+
+sample fit file bytes
+--BoundaryFit--
+
+### 3. Save a .fit file - no token (expect 401 Unauthorized)
+POST {{host}}/files/fit?rideDate=2026-06-08T08:00:00Z
+Content-Type: multipart/form-data; boundary=BoundaryFit
+
+--BoundaryFit
+Content-Disposition: form-data; name="fit"; filename="ride.fit"
+Content-Type: application/octet-stream
+
+sample fit file bytes
+--BoundaryFit--
