@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Cycling.Rider.Tracking.Api\Cycling.Rider.Tracking.Api\Cycling.Rider.Tracking.Api.csproj" />
+    <ProjectReference Include="..\..\src\Cycling.Rider.Tracking.Api\Cycling.Rider.Tracking.Api.csproj" />
   </ItemGroup>
 
   <ItemGroup>

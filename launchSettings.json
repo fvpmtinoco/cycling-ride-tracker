@@ -3,9 +3,12 @@
     "Docker Compose": {
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
+      "composeLaunchServiceName": "cycling.rider.tracking.api",
       "serviceActions": {
         "cycling.rider.tracking.api": "StartDebugging"
-      }
+      },
+      "composeLaunchAction": "LaunchBrowser",
+      "composeLaunchUrl": "https://localhost:30001/swagger"
     }
   }
 }
