@@ -55,8 +55,8 @@ public class FilesController(
     [HttpGet("{id:guid}", Name = nameof(GetFile))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public Task<IResult> GetFile(Guid id)
+    public async Task<IResult> GetFile(Guid id)
     {
-        return Task.FromResult(Results.Ok());
+        return Results.Ok();
     }
 }

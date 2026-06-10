@@ -108,9 +108,16 @@ public sealed class IdempotencyFilter(
         }
     }
 
+    private static Task<string> ComputeRequestHashAsync(HttpRequest request, CancellationToken cancellationToken) =>
+        IdempotencyHasher.ComputeAsync(request, cancellationToken);
+}
+
+// Shared by both IdempotencyFilter (MVC resource filter) and IdempotencyEndpointFilter (Minimal API).
+internal static class IdempotencyHasher
+{
     // Hash semantic content (query string + sorted form fields + file bytes) not raw multipart
     // body bytes, because MultipartFormDataContent generates a new random boundary per instance.
-    private static async Task<string> ComputeRequestHashAsync(HttpRequest request, CancellationToken cancellationToken)
+    internal static async Task<string> ComputeAsync(HttpRequest request, CancellationToken cancellationToken)
     {
         var form = await request.ReadFormAsync(cancellationToken);
 
