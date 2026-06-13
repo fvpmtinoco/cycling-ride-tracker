@@ -1,25 +1,22 @@
 using Cycling.Rider.Tracking.Api.Extensions;
 using Cycling.Rider.Tracking.Api.Filters;
 using Cycling.Rider.Tracking.Api.Infrastructure;
+using Cycling.Rider.Tracking.Application;
 using Cycling.Rider.Tracking.Application.Abstractions.Messaging;
 using Cycling.Rider.Tracking.Application.Files;
 using Cycling.Rider.Tracking.Infrastructure;
-using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-
 builder.Services.AddPresentation();
 builder.Services.AddAuthenticationInternalServices(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddValidators();
 
 builder.Services.AddScoped<ICommandHandler<SaveFileCommand, SaveFileResult>, SaveFileCommandHandler>();
-builder.Services.AddScoped<IValidator<SaveFileCommand>, SaveFileCommandValidator>();
 builder.Services.AddScoped<IQueryHandler<ListFilesQuery, ListFilesResult>, ListFilesQueryHandler>();
-builder.Services.AddScoped<IValidator<ListFilesQuery>, ListFilesQueryValidator>();
 builder.Services.AddScoped<IdempotencyFilter>();
 
 // Minimal API: IEndpointFilter resolved from DI via .AddEndpointFilter<T>(), so it must be registered.

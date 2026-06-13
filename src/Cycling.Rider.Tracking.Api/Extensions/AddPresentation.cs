@@ -1,4 +1,6 @@
-﻿namespace Cycling.Rider.Tracking.Api.Extensions;
+﻿using Cycling.Rider.Tracking.Api.Filters;
+
+namespace Cycling.Rider.Tracking.Api.Extensions;
 
 public static class DependencyInjection
 {
@@ -7,6 +9,7 @@ public static class DependencyInjection
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
+        services.AddSwaggerGen(c => c.OperationFilter<IdempotencyHeaderOperationFilter>());
 
         return services;
     }

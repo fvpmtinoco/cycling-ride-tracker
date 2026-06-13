@@ -6,6 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Cycling.Rider.Tracking.Infrastructure.Outbox;
 
+/// <summary>
+/// Drains the transaction_files outbox: stores each pending file (idempotently),
+/// marks it processed, and stages a RideFileSaved publish via MassTransit's bus outbox.
+/// SaveChanges + Commit persist the flags and staged messages atomically; broker
+/// delivery happens afterwards. Any throw before Commit rolls everything back.
+/// </summary>
 internal sealed class OutboxProcessor(
     DatabaseContext databaseContext,
     IFileStore fileStore,
@@ -32,6 +38,7 @@ internal sealed class OutboxProcessor(
             file.Processed = true;
             file.ProcessedAt = DateTimeOffset.UtcNow;
 
+            // Uses transactional outbox, message is not placed in the queue immediatly
             await publishEndpoint.Publish(
                 new RideFileSaved(file.FileId, file.ProcessedAt.Value),
                 cancellationToken);

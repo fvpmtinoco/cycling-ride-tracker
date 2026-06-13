@@ -1,6 +1,7 @@
 ﻿using Amazon.Runtime;
 using Amazon.S3;
 using Cycling.Rider.Tracking.Application.Abstractions.Data;
+using Cycling.Rider.Tracking.Infrastructure.Cleanup;
 using Cycling.Rider.Tracking.Infrastructure.Database;
 using Cycling.Rider.Tracking.Infrastructure.Options;
 using Cycling.Rider.Tracking.Infrastructure.Outbox;
@@ -22,7 +23,8 @@ public static class DependencyInjection
         services.AddDatabase(configuration)
                 .AddStorage(configuration)
                 .AddPushFileService()
-                .AddTransport(configuration);
+                .AddTransport(configuration)
+                .AddCleanupService();
 
     private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
     {
@@ -67,6 +69,8 @@ public static class DependencyInjection
 
         return services;
     }
+
+    private static IServiceCollection AddCleanupService(this IServiceCollection services) => services.AddHostedService<CleanupService>();
 
     private static IServiceCollection AddTransport(this IServiceCollection services, IConfiguration configuration)
     {

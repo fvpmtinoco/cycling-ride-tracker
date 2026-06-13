@@ -3,7 +3,7 @@ services:
     image: ${DOCKER_REGISTRY-}cyclingridertrackingapi
     build:
       context: .
-      dockerfile: src/Cycling.Rider.Tracking.Api/Cycling.Rider.Tracking.Api/Dockerfile
+      dockerfile: src/Cycling.Rider.Tracking.Api/Dockerfile
     depends_on:
       postgres.tracking:
           condition: service_healthy
