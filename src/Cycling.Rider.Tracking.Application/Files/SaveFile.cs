@@ -10,22 +10,6 @@ namespace Cycling.Rider.Tracking.Application.Files;
 public sealed record SaveFileCommand(Stream Content, string ContentType, DateTimeOffset RideDate) : ICommand<SaveFileResult>;
 public sealed record SaveFileResult(Guid Id);
 
-public sealed class SaveFileCommandValidator : AbstractValidator<SaveFileCommand>
-{
-    public SaveFileCommandValidator()
-    {
-        RuleFor(command => command.RideDate)
-            .GreaterThanOrEqualTo(_ => DateTimeOffset.UtcNow.AddMonths(-6))
-            .WithErrorCode("RideDate.TooOld")
-            .WithMessage("Ride date cannot be older than 6 months.");
-
-        RuleFor(command => command.RideDate)
-            .LessThanOrEqualTo(_ => DateTimeOffset.UtcNow)
-            .WithErrorCode("RideDate.InFuture")
-            .WithMessage("Ride date cannot be in the future.");
-    }
-}
-
 public sealed class SaveFileCommandHandler(
     IDatabaseContext databaseContext,
     IValidator<SaveFileCommand> validator,
@@ -38,6 +22,10 @@ public sealed class SaveFileCommandHandler(
         {
             return Result.Failure<SaveFileResult>(validation.ToValidationError());
         }
+
+        // Simply could upload to S3 here. If the transaction below fails, orphaned file.
+        // Don't track this with S3 tags (the tag write can fail too). Instead, a periodic
+        // sweep deletes any S3 object older than N hours that has no referencing Ride row.
 
         using var transaction = await databaseContext.Database.BeginTransactionAsync(cancellationToken);
         using (logger.BeginScope(new Dictionary<string, object>
@@ -70,16 +58,16 @@ public sealed class SaveFileCommandHandler(
 
                 await transaction.CommitAsync(cancellationToken);
 
-                // TODO: Save data to transactional outbox and have a separate process that reads from the outbox and saves to the file store.
                 logger.LogInformation("Generated file with Id: {Id}", ride.Entity.Id);
 
                 return Result.Success(new SaveFileResult(ride.Entity.Id));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                // Not necessary, transaction rolls back because of being scoped. For clarity purposes only
                 await transaction.RollbackAsync(cancellationToken);
-                // TODO:  Log the exception here.
 
+                logger.LogError(ex, "Error ocurred while saving the tracking file");
                 return Result.Failure<SaveFileResult>(Error.Failure("save_file_failed", "Failed to save the file."));
             }
         }

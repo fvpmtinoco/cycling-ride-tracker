@@ -11,6 +11,25 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Cycling.Rider.Tracking.Api\**" />
+	  <Compile Remove="Cycling.Rider.Tracking.Application\**" />
+	  <Compile Remove="Cycling.Rider.Tracking.Domain\**" />
+	  <Compile Remove="Cycling.Rider.Tracking.Infrastructure\**" />
+	  <Content Remove="Cycling.Rider.Tracking.Api\**" />
+	  <Content Remove="Cycling.Rider.Tracking.Application\**" />
+	  <Content Remove="Cycling.Rider.Tracking.Domain\**" />
+	  <Content Remove="Cycling.Rider.Tracking.Infrastructure\**" />
+	  <EmbeddedResource Remove="Cycling.Rider.Tracking.Api\**" />
+	  <EmbeddedResource Remove="Cycling.Rider.Tracking.Application\**" />
+	  <EmbeddedResource Remove="Cycling.Rider.Tracking.Domain\**" />
+	  <EmbeddedResource Remove="Cycling.Rider.Tracking.Infrastructure\**" />
+	  <None Remove="Cycling.Rider.Tracking.Api\**" />
+	  <None Remove="Cycling.Rider.Tracking.Application\**" />
+	  <None Remove="Cycling.Rider.Tracking.Domain\**" />
+	  <None Remove="Cycling.Rider.Tracking.Infrastructure\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
 		<PackageReference Include="Microsoft.AspNetCore.OpenApi" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design">
